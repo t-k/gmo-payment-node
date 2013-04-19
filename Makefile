@@ -15,7 +15,7 @@ clean: clean-docs
 	rm -rf lib/ test/*.js
 
 build:
-	coffee -o lib/ -c src/ && coffee -c test/gmo.coffee
+	coffee -o lib/ -c src/
 
 test:
 	mocha
