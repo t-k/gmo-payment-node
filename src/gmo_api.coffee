@@ -11,11 +11,6 @@ class GMOAPI
     params = @replaceParams(options_param)
     path = "/payment/#{path}"
     post_data = querystring.stringify(params)
-    conv = new iconv.Iconv("UTF-8", "SHIFT_JIS")
-    try
-      post_data = conv.convert(post_data).toString()
-    catch error
-      console.log "ConvertError: #{error} #{post_data}"
     options =
       host: @host
       path: path
@@ -70,8 +65,12 @@ class GMOAPI
 
   replaceParams: (params) ->
     new_params = {}
+    conv = new iconv.Iconv("UTF-8", "SHIFT_JIS")
     for key of params
-      new_params[Const[key]] = params[key]
+      try
+        new_params[Const[key]] = conv.convert("#{params[key]}").toString()
+      catch error
+        new_params[Const[key]] = "#{params[key]}"
     return new_params
 
 module.exports.GMOAPI = GMOAPI

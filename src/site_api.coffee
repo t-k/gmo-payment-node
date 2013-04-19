@@ -80,7 +80,11 @@ class SiteAPI extends gmo.GMOAPI
   # ```@param {Function} cb```
   saveCard: (options, cb) ->
     name = "SaveCard.idPass"
-    required = ["member_id", "card_no", "expire"]
+    required = [
+      "member_id"
+      "card_no"
+      "expire"
+    ]
     @assertRequiredOptions required, options
     @apiCall name, options, cb
 
@@ -94,7 +98,10 @@ class SiteAPI extends gmo.GMOAPI
   # ```@param {Function} cb```
   deleteCard: (options, cb) ->
     name = "DeleteCard.idPass"
-    required = ["member_id", "card_seq"]
+    required = [
+      "member_id"
+      "card_seq"
+    ]
     @assertRequiredOptions required, options
     @apiCall name, options, cb
 
@@ -108,7 +115,11 @@ class SiteAPI extends gmo.GMOAPI
   # ```@param {Function} cb```
   searchCard: (options, cb) ->
     name = "SearchCard.idPass"
-    required = ["member_id", "card_seq", "seq_mode"]
+    required = [
+      "member_id"
+      "card_seq"
+      "seq_mode"
+    ]
     @assertRequiredOptions required, options
     @apiCall name, options, cb
 
@@ -122,7 +133,13 @@ class SiteAPI extends gmo.GMOAPI
   # ```@param {Function} cb```
   execTran: (options, cb) ->
     name = "ExecTran.idPass"
-    required = ["access_id", "access_pass", "order_id", "member_id", "card_seq"]
+    required = [
+      "access_id"
+      "access_pass"
+      "order_id"
+      "member_id"
+      "card_seq"
+    ]
     @assertRequiredOptions required, options
     @apiCall name, options, cb
 

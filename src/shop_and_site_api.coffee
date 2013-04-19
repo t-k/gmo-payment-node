@@ -26,7 +26,10 @@ class ShopAndSiteAPI extends gmo.GMOAPI
   # ```@param {Function} cb```
   tradedCard: (options, cb) ->
     name = "TradedCard.idPass"
-    required = ["order_id", "member_id"]
+    required = [
+      "order_id"
+      "member_id"
+    ]
     @assertRequiredOptions required, options
     @apiCall name, options, cb
 

@@ -24,7 +24,10 @@ class ShopAPI extends gmo.GMOAPI
   # ```@param {Function} cb```
   entryTran: (options, cb) ->
     name = "EntryTran.idPass"
-    required = ["order_id", "job_cd"]
+    required = [
+      "order_id"
+      "job_cd"
+    ]
     required.push("amount") if options["job_cd"] && options["job_cd"] != "CHECK"
     @assertRequiredOptions required, options
     @apiCall name, options, cb
@@ -44,7 +47,13 @@ class ShopAPI extends gmo.GMOAPI
     else
       options["client_field_flg"] = "0"
     options["device_category"] = "0"
-    required = ["access_id", "access_pass", "order_id", "card_no", "expire"]
+    required = [
+      "access_id"
+      "access_pass"
+      "order_id"
+      "card_no"
+      "expire"
+    ]
     @assertRequiredOptions required, options
     @apiCall name, options, cb
 
@@ -58,7 +67,11 @@ class ShopAPI extends gmo.GMOAPI
   # ```@param {Function} cb```
   alterTran: (options, cb) ->
     name = "AlterTran.idPass"
-    required = ["access_id", "access_pass", "job_cd"]
+    required = [
+      "access_id"
+      "access_pass"
+      "job_cd"
+    ]
     @assertRequiredOptions required, options
     @apiCall name, options, cb
 
@@ -72,7 +85,12 @@ class ShopAPI extends gmo.GMOAPI
   # ```@param {Function} cb```
   changeTran: (options, cb) ->
     name = "ChangeTran.idPass"
-    required = ["access_id", "access_pass", "job_cd", "amount"]
+    required = [
+      "access_id"
+      "access_pass"
+      "job_cd"
+      "amount"
+    ]
     @assertRequiredOptions required, options
     @apiCall name, options, cb
 
@@ -100,7 +118,10 @@ class ShopAPI extends gmo.GMOAPI
   # ```@param {Function} cb```
   searchTradeMulti: (options, cb) ->
     name = "SearchTradeMulti.idPass"
-    required = ["order_id", "pay_type"]
+    required = [
+      "order_id"
+      "pay_type"
+    ]
     @assertRequiredOptions required, options
     @apiCall name, options, cb
 
