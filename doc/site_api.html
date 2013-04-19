@@ -1,0 +1,83 @@
+<!DOCTYPE html><html lang="en"><head><title>site_api</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="site_api"><meta name="groc-project-path" content="src/site_api.coffee"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/site_api.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="nv">utils = </span><span class="nx">require</span> <span class="s">&quot;./utils&quot;</span>
+<span class="nv">gmo = </span><span class="nx">require</span> <span class="s">&quot;./gmo_api&quot;</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="siteapi">SiteAPI</h2>
+
+<p>GMO moduleでは、API呼び出しにGMOから与えられたサイトID、サイトパスが必要になるAPIをSite APIと定義しています。 主にカードや会員に関する操作を担っているAPI群となります。 取引登録、決済ステータス変更等、決済に関するAPIが主です。</p></div></div><div class="code"><div class="wrapper"><span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>初期化の際には、GMOから指定されたサイトID、サイトパス、APIのホスト名を引数で渡す必要があります。</p></div></div><div class="code"><div class="wrapper"><span class="k">class</span> <span class="nx">SiteAPI</span> <span class="k">extends</span> <span class="nx">gmo</span><span class="p">.</span><span class="nx">GMOAPI</span>
+  <span class="nv">constructor: </span><span class="nf">(options = {}) -&gt;</span>
+    <span class="vi">@host      = </span><span class="nx">options</span><span class="p">.</span><span class="nx">host</span>
+    <span class="vi">@site_id   = </span><span class="nx">options</span><span class="p">.</span><span class="nx">site_id</span>
+    <span class="vi">@site_pass = </span><span class="nx">options</span><span class="p">.</span><span class="nx">site_pass</span>
+    <span class="k">unless</span> <span class="nx">@site_id</span> <span class="o">&amp;&amp;</span> <span class="nx">@site_pass</span> <span class="o">&amp;&amp;</span> <span class="nx">@host</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s">&quot;ArgumentError: Initialize must receive a hash with site_id, site_pass and either host!&quot;</span><span class="p">)</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="2321">2.3.2.1.会員登録</h2>
+
+<h3 id="savemember">saveMember</h3>
+
+<p>以降の決済取引で必要となる取引 ID と取引パスワードの発行を行い、取引を開始します。</p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Object} options</code></p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Function} cb</code></p></div></div><div class="code"><div class="wrapper">  <span class="nv">saveMember: </span><span class="nf">(options, cb) -&gt;</span>
+    <span class="nv">name = </span><span class="s">&quot;SaveMember.idPass&quot;</span>
+    <span class="nv">required = </span><span class="p">[</span><span class="s">&quot;member_id&quot;</span><span class="p">]</span>
+    <span class="nx">@assertRequiredOptions</span> <span class="nx">required</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="nx">@apiCall</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">cb</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="2421">2.4.2.1.会員更新</h2>
+
+<h3 id="updatemember">updateMember</h3>
+
+<p>指定されたサイトに会員情報を更新します。</p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Object} options</code></p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Function} cb</code></p></div></div><div class="code"><div class="wrapper">  <span class="nv">updateMember: </span><span class="nf">(options, cb) -&gt;</span>
+    <span class="nv">name = </span><span class="s">&quot;UpdateMember.idPass&quot;</span>
+    <span class="nv">required = </span><span class="p">[</span><span class="s">&quot;member_id&quot;</span><span class="p">]</span>
+    <span class="nx">@assertRequiredOptions</span> <span class="nx">required</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="nx">@apiCall</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">cb</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="2521">2.5.2.1.会員削除</h2>
+
+<h3 id="deletemember">deleteMember</h3>
+
+<p>指定したサイトから会員情報を削除します。</p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Object} options</code></p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Function} cb</code></p></div></div><div class="code"><div class="wrapper">  <span class="nv">deleteMember: </span><span class="nf">(options, cb) -&gt;</span>
+    <span class="nv">name = </span><span class="s">&quot;DeleteMember.idPass&quot;</span>
+    <span class="nv">required = </span><span class="p">[</span><span class="s">&quot;member_id&quot;</span><span class="p">]</span>
+    <span class="nx">@assertRequiredOptions</span> <span class="nx">required</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="nx">@apiCall</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">cb</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="2621">2.6.2.1.会員参照</h2>
+
+<h3 id="searchmember">searchMember</h3>
+
+<p>指定したサイトの会員情報を参照します。</p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Object} options</code></p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Function} cb</code></p></div></div><div class="code"><div class="wrapper">  <span class="nv">searchMember: </span><span class="nf">(options, cb) -&gt;</span>
+    <span class="nv">name = </span><span class="s">&quot;SearchMember.idPass&quot;</span>
+    <span class="nv">required = </span><span class="p">[</span><span class="s">&quot;member_id&quot;</span><span class="p">]</span>
+    <span class="nx">@assertRequiredOptions</span> <span class="nx">required</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="nx">@apiCall</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">cb</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="2721">2.7.2.1.カード登録/更新</h2>
+
+<h3 id="savecard">saveCard</h3>
+
+<p>指定した会員にカード情報を登録します。尚、サイトに設定されたショップ ID を使用してカード会社と通信を行い有効性の確認を行います。</p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Object} options</code></p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Function} cb</code></p></div></div><div class="code"><div class="wrapper">  <span class="nv">saveCard: </span><span class="nf">(options, cb) -&gt;</span>
+    <span class="nv">name = </span><span class="s">&quot;SaveCard.idPass&quot;</span>
+    <span class="nv">required = </span><span class="p">[</span><span class="s">&quot;member_id&quot;</span><span class="p">,</span> <span class="s">&quot;card_no&quot;</span><span class="p">,</span> <span class="s">&quot;expire&quot;</span><span class="p">]</span>
+    <span class="nx">@assertRequiredOptions</span> <span class="nx">required</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="nx">@apiCall</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">cb</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="2821">2.8.2.1.カード削除</h2>
+
+<h3 id="deletecard">deleteCard</h3>
+
+<p>指定した会員のカード情報を削除します。</p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Object} options</code></p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Function} cb</code></p></div></div><div class="code"><div class="wrapper">  <span class="nv">deleteCard: </span><span class="nf">(options, cb) -&gt;</span>
+    <span class="nv">name = </span><span class="s">&quot;DeleteCard.idPass&quot;</span>
+    <span class="nv">required = </span><span class="p">[</span><span class="s">&quot;member_id&quot;</span><span class="p">,</span> <span class="s">&quot;card_seq&quot;</span><span class="p">]</span>
+    <span class="nx">@assertRequiredOptions</span> <span class="nx">required</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="nx">@apiCall</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">cb</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="2921">2.9.2.1.カード参照</h2>
+
+<h3 id="searchcard">searchCard</h3>
+
+<p>お客様が選択したカード登録連番のカード情報を取得します。 カード情報が本人認証サービスに対応していない場合は、カード会社との通信を行い決済を実行します。その際の出力パラメータは「2.10.2.3決済実行」の出力パラメータと同じになります。</p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Object} options</code></p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Function} cb</code></p></div></div><div class="code"><div class="wrapper">  <span class="nv">searchCard: </span><span class="nf">(options, cb) -&gt;</span>
+    <span class="nv">name = </span><span class="s">&quot;SearchCard.idPass&quot;</span>
+    <span class="nv">required = </span><span class="p">[</span><span class="s">&quot;member_id&quot;</span><span class="p">,</span> <span class="s">&quot;card_seq&quot;</span><span class="p">,</span> <span class="s">&quot;seq_mode&quot;</span><span class="p">]</span>
+    <span class="nx">@assertRequiredOptions</span> <span class="nx">required</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="nx">@apiCall</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">cb</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="21123-">2.11.2.3. 決済実行</h2>
+
+<h3 id="exectran">execTran</h3>
+
+<p>お客様が選択したカード登録連番のカード情報を取得します。 カード情報が本人認証サービスに対応していない場合は、カード会社との通信を行い決済を実行します。その際の出力パラメータは「2.10.2.3決済実行」の出力パラメータと同じになります。</p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Object} options</code></p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Function} cb</code></p></div></div><div class="code"><div class="wrapper">  <span class="nv">execTran: </span><span class="nf">(options, cb) -&gt;</span>
+    <span class="nv">name = </span><span class="s">&quot;ExecTran.idPass&quot;</span>
+    <span class="nv">required = </span><span class="p">[</span><span class="s">&quot;access_id&quot;</span><span class="p">,</span> <span class="s">&quot;access_pass&quot;</span><span class="p">,</span> <span class="s">&quot;order_id&quot;</span><span class="p">,</span> <span class="s">&quot;member_id&quot;</span><span class="p">,</span> <span class="s">&quot;card_seq&quot;</span><span class="p">]</span>
+    <span class="nx">@assertRequiredOptions</span> <span class="nx">required</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="nx">@apiCall</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">cb</span>
+
+  <span class="nv">apiCall: </span><span class="nf">(name, options, cb) -&gt;</span>
+    <span class="nv">extra_params =</span>
+      <span class="s">&quot;site_id&quot;</span><span class="o">:</span> <span class="nx">@site_id</span>
+      <span class="s">&quot;site_pass&quot;</span><span class="o">:</span> <span class="nx">@site_pass</span>
+    <span class="nv">params = </span><span class="nx">utils</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="nx">extra_params</span><span class="p">)</span>
+    <span class="nx">@api</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">params</span><span class="p">,</span> <span class="nx">cb</span>
+
+<span class="nv">module.exports = </span><span class="nx">SiteAPI</span></div></div></div></div></body></html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html><html lang="en"><head><title>shop_api</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="shop_api"><meta name="groc-project-path" content="src/shop_api.coffee"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/shop_api.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="nv">utils = </span><span class="nx">require</span> <span class="s">&quot;./utils&quot;</span>
+<span class="nv">gmo = </span><span class="nx">require</span> <span class="s">&quot;./gmo_api&quot;</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="shopapi">ShopAPI</h2>
+
+<p>GMO moduleでは、API呼び出しにGMOから与えられたショップID、ショップパスが必要になるAPIをShop APIと定義しています。 取引登録、決済ステータス変更等、決済に関するAPIが主です。</p></div></div><div class="code"><div class="wrapper"><span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p>初期化の際には、GMOから指定されたショップID、ショップパス、APIのホスト名を引数で渡す必要があります。</p></div></div><div class="code"><div class="wrapper"><span class="k">class</span> <span class="nx">ShopAPI</span> <span class="k">extends</span> <span class="nx">gmo</span><span class="p">.</span><span class="nx">GMOAPI</span>
+  <span class="nv">constructor: </span><span class="nf">(options = {}) -&gt;</span>
+    <span class="vi">@host      = </span><span class="nx">options</span><span class="p">.</span><span class="nx">host</span>
+    <span class="vi">@shop_id   = </span><span class="nx">options</span><span class="p">.</span><span class="nx">shop_id</span>
+    <span class="vi">@shop_pass = </span><span class="nx">options</span><span class="p">.</span><span class="nx">shop_pass</span>
+    <span class="k">unless</span> <span class="nx">@shop_id</span> <span class="o">&amp;&amp;</span> <span class="nx">@shop_pass</span> <span class="o">&amp;&amp;</span> <span class="nx">@host</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s">&quot;ArgumentError: Initialize must receive a hash with shop_id, shop_pass and either host!&quot;</span><span class="p">)</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="2121">2.1.2.1.取引登録</h2>
+
+<h3 id="entrytran">entryTran</h3>
+
+<p>これ以降の決済取引で必要となる取引 ID と取引パスワードの発行を行い、取引を開始します。</p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Object} options</code></p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Function} cb</code></p></div></div><div class="code"><div class="wrapper">  <span class="nv">entryTran: </span><span class="nf">(options, cb) -&gt;</span>
+    <span class="nv">name = </span><span class="s">&quot;EntryTran.idPass&quot;</span>
+    <span class="nv">required = </span><span class="p">[</span><span class="s">&quot;order_id&quot;</span><span class="p">,</span> <span class="s">&quot;job_cd&quot;</span><span class="p">]</span>
+    <span class="nx">required</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="s">&quot;amount&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="nx">options</span><span class="p">[</span><span class="s">&quot;job_cd&quot;</span><span class="p">]</span> <span class="o">&amp;&amp;</span> <span class="nx">options</span><span class="p">[</span><span class="s">&quot;job_cd&quot;</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&quot;CHECK&quot;</span>
+    <span class="nx">@assertRequiredOptions</span> <span class="nx">required</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="nx">@apiCall</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">cb</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="2222">2.2.2.2.決済実行</h2>
+
+<h3 id="exectran">execTran</h3>
+
+<p>カード番号と有効期限の情報を使用して、カード会社と通信を行い決済を実施し、結果を返します。</p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Object} options</code></p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Function} cb</code></p></div></div><div class="code"><div class="wrapper">  <span class="nv">execTran: </span><span class="nf">(options, cb) -&gt;</span>
+    <span class="nv">name = </span><span class="s">&quot;ExecTran.idPass&quot;</span>
+    <span class="k">if</span> <span class="nx">options</span><span class="p">[</span><span class="s">&quot;client_field_1&quot;</span><span class="p">]</span> <span class="o">||</span> <span class="nx">options</span><span class="p">[</span><span class="s">&quot;client_field_2&quot;</span><span class="p">]</span> <span class="o">||</span> <span class="nx">options</span><span class="p">[</span><span class="s">&quot;client_field_3&quot;</span><span class="p">]</span>
+      <span class="nx">options</span><span class="p">[</span><span class="s">&quot;client_field_flg&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;1&quot;</span>
+    <span class="k">else</span>
+      <span class="nx">options</span><span class="p">[</span><span class="s">&quot;client_field_flg&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
+    <span class="nx">options</span><span class="p">[</span><span class="s">&quot;device_category&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
+    <span class="nv">required = </span><span class="p">[</span><span class="s">&quot;access_id&quot;</span><span class="p">,</span> <span class="s">&quot;access_pass&quot;</span><span class="p">,</span> <span class="s">&quot;order_id&quot;</span><span class="p">,</span> <span class="s">&quot;card_no&quot;</span><span class="p">,</span> <span class="s">&quot;expire&quot;</span><span class="p">]</span>
+    <span class="nx">@assertRequiredOptions</span> <span class="nx">required</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="nx">@apiCall</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">cb</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="21421">2.14.2.1.決済変更</h2>
+
+<h3 id="altertran">alterTran</h3>
+
+<p>仮売上の決済に対して実売上を行います。尚、実行時に仮売上時との金額チェックを行います。</p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Object} options</code></p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Function} cb</code></p></div></div><div class="code"><div class="wrapper">  <span class="nv">alterTran: </span><span class="nf">(options, cb) -&gt;</span>
+    <span class="nv">name = </span><span class="s">&quot;AlterTran.idPass&quot;</span>
+    <span class="nv">required = </span><span class="p">[</span><span class="s">&quot;access_id&quot;</span><span class="p">,</span> <span class="s">&quot;access_pass&quot;</span><span class="p">,</span> <span class="s">&quot;job_cd&quot;</span><span class="p">]</span>
+    <span class="nx">@assertRequiredOptions</span> <span class="nx">required</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="nx">@apiCall</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">cb</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="21521">2.15.2.1.金額変更</h2>
+
+<h3 id="changetran">changeTran</h3>
+
+<p>決済が完了した取引に対して金額の変更を行います。</p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Object} options</code></p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Function} cb</code></p></div></div><div class="code"><div class="wrapper">  <span class="nv">changeTran: </span><span class="nf">(options, cb) -&gt;</span>
+    <span class="nv">name = </span><span class="s">&quot;ChangeTran.idPass&quot;</span>
+    <span class="nv">required = </span><span class="p">[</span><span class="s">&quot;access_id&quot;</span><span class="p">,</span> <span class="s">&quot;access_pass&quot;</span><span class="p">,</span> <span class="s">&quot;job_cd&quot;</span><span class="p">,</span> <span class="s">&quot;amount&quot;</span><span class="p">]</span>
+    <span class="nx">@assertRequiredOptions</span> <span class="nx">required</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="nx">@apiCall</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">cb</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="21621">2.16.2.1.取引状態参照</h2>
+
+<h3 id="searchtrade">searchTrade</h3>
+
+<p>指定したオーダーID の取引情報を取得します。</p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Object} options</code></p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Function} cb</code></p></div></div><div class="code"><div class="wrapper">  <span class="nv">searchTrade: </span><span class="nf">(options, cb) -&gt;</span>
+    <span class="nv">name = </span><span class="s">&quot;SearchTrade.idPass&quot;</span>
+    <span class="nv">required = </span><span class="p">[</span><span class="s">&quot;order_id&quot;</span><span class="p">]</span>
+    <span class="nx">@assertRequiredOptions</span> <span class="nx">required</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="nx">@apiCall</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">cb</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><h2 id="13121">13.1.2.1.取引状態参照</h2>
+
+<h3 id="searchtrademulti">searchTradeMulti</h3>
+
+<p>指定したオーダーIDの取引情報を取得します。</p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Object} options</code></p></div></div><div class="code"><div class="wrapper">  <span class="c1">#</span></div></div></div><div class="segment"><div class="comments"><div class="wrapper"><p><code>@param {Function} cb</code></p></div></div><div class="code"><div class="wrapper">  <span class="nv">searchTradeMulti: </span><span class="nf">(options, cb) -&gt;</span>
+    <span class="nv">name = </span><span class="s">&quot;SearchTradeMulti.idPass&quot;</span>
+    <span class="nv">required = </span><span class="p">[</span><span class="s">&quot;order_id&quot;</span><span class="p">,</span> <span class="s">&quot;pay_type&quot;</span><span class="p">]</span>
+    <span class="nx">@assertRequiredOptions</span> <span class="nx">required</span><span class="p">,</span> <span class="nx">options</span>
+    <span class="nx">@apiCall</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">options</span><span class="p">,</span> <span class="nx">cb</span>
+
+  <span class="nv">apiCall: </span><span class="nf">(name, options, cb) -&gt;</span>
+    <span class="nv">extra_params =</span>
+      <span class="s">&quot;shop_id&quot;</span><span class="o">:</span> <span class="nx">@shop_id</span>
+      <span class="s">&quot;shop_pass&quot;</span><span class="o">:</span> <span class="nx">@shop_pass</span>
+    <span class="nv">params = </span><span class="nx">utils</span><span class="p">.</span><span class="nx">extend</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="nx">extra_params</span><span class="p">)</span>
+    <span class="nx">@api</span> <span class="nx">name</span><span class="p">,</span> <span class="nx">params</span><span class="p">,</span> <span class="nx">cb</span>
+
+<span class="nv">module.exports = </span><span class="nx">ShopAPI</span></div></div></div></div></body></html>

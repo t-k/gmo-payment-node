@@ -1,0 +1,76 @@
+<!DOCTYPE html><html lang="en"><head><title>gmo_api</title></head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0"><meta name="groc-relative-root" content=""><meta name="groc-document-path" content="gmo_api"><meta name="groc-project-path" content="src/gmo_api.coffee"><link rel="stylesheet" type="text/css" media="all" href="assets/style.css"><script type="text/javascript" src="assets/behavior.js"></script><body><div id="meta"><div class="file-path">src/gmo_api.coffee</div></div><div id="document"><div class="segment"><div class="code"><div class="wrapper"><span class="nv">https = </span><span class="nx">require</span> <span class="s">&quot;https&quot;</span>
+<span class="nv">querystring = </span><span class="nx">require</span> <span class="s">&quot;querystring&quot;</span>
+<span class="nv">iconv = </span><span class="nx">require</span> <span class="s">&quot;iconv&quot;</span>
+<span class="nv">Const = </span><span class="nx">require</span> <span class="s">&quot;./const&quot;</span>
+
+<span class="k">class</span> <span class="nx">GMOAPI</span>
+  <span class="nv">constructor: </span><span class="nf">(options = {}) -&gt;</span>
+    <span class="vi">@host = </span><span class="nx">options</span><span class="p">.</span><span class="nx">host</span>
+
+  <span class="nv">api: </span><span class="nf">(path, options_param, cb) -&gt;</span>
+    <span class="nv">params = </span><span class="nx">@replaceParams</span><span class="p">(</span><span class="nx">options_param</span><span class="p">)</span>
+    <span class="nv">path = </span><span class="s">&quot;/payment/</span><span class="si">#{</span><span class="nx">path</span><span class="si">}</span><span class="s">&quot;</span>
+    <span class="nv">post_data = </span><span class="nx">querystring</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">params</span><span class="p">)</span>
+    <span class="nv">options =</span>
+      <span class="nv">host: </span><span class="nx">@host</span>
+      <span class="nv">path: </span><span class="nx">path</span>
+      <span class="nv">method: </span><span class="s">&quot;POST&quot;</span>
+      <span class="nv">port: </span><span class="mi">443</span>
+      <span class="nv">headers:</span>
+        <span class="s">&quot;Content-Type&quot;</span><span class="o">:</span> <span class="s">&quot;application/x-www-form-urlencoded&quot;</span>
+        <span class="s">&quot;Content-Length&quot;</span><span class="o">:</span> <span class="nx">post_data</span><span class="p">.</span><span class="nx">length</span>
+    <span class="nv">req = </span><span class="nx">https</span><span class="p">.</span><span class="nx">request</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span> <span class="nf">(res) -&gt;</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">setEncoding</span> <span class="s">&quot;utf8&quot;</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">on</span> <span class="s">&quot;data&quot;</span><span class="p">,</span> <span class="nf">(chunk) -&gt;</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;BODY: &quot;</span> <span class="o">+</span> <span class="nx">chunk</span>
+    <span class="p">)</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">on</span> <span class="s">&quot;error&quot;</span><span class="p">,</span> <span class="nf">(e) -&gt;</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;problem with request: &quot;</span> <span class="o">+</span> <span class="nx">e</span><span class="p">.</span><span class="nx">message</span>
+      <span class="nx">cb</span> <span class="nx">e</span><span class="p">,</span> <span class="kc">null</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">on</span> <span class="s">&quot;response&quot;</span><span class="p">,</span> <span class="nf">(res) -&gt;</span>
+      <span class="nv">response = </span><span class="s">&quot;&quot;</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">setEncoding</span> <span class="s">&quot;utf8&quot;</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">on</span> <span class="s">&quot;data&quot;</span><span class="p">,</span> <span class="nf">(chunk) -&gt;</span>
+        <span class="nx">response</span> <span class="o">+=</span> <span class="nx">chunk</span>
+      <span class="nx">res</span><span class="p">.</span><span class="nx">on</span> <span class="s">&quot;end&quot;</span><span class="p">,</span> <span class="nf">-&gt;</span>
+        <span class="nv">err = </span><span class="kc">null</span>
+        <span class="nv">conv = </span><span class="k">new</span> <span class="nx">iconv</span><span class="p">.</span><span class="nx">Iconv</span><span class="p">(</span><span class="s">&quot;SHIFT_JIS&quot;</span><span class="p">,</span> <span class="s">&quot;UTF-8&quot;</span><span class="p">)</span>
+        <span class="k">try</span>
+          <span class="nv">response = </span><span class="nx">conv</span><span class="p">.</span><span class="nx">convert</span><span class="p">(</span><span class="nx">response</span><span class="p">).</span><span class="nx">toString</span><span class="p">()</span>
+        <span class="k">catch</span> <span class="nx">error</span>
+          <span class="nx">console</span><span class="p">.</span><span class="nx">log</span> <span class="s">&quot;ConvertError: </span><span class="si">#{</span><span class="nx">error</span><span class="si">}</span><span class="s"> </span><span class="si">#{</span><span class="nx">response</span><span class="si">}</span><span class="s">&quot;</span>
+        <span class="nv">response = </span><span class="nx">querystring</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span>
+        <span class="nv">response.httpStatusCode = </span><span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span>
+        <span class="k">if</span> <span class="nx">response</span><span class="p">[</span><span class="s">&quot;ErrCode&quot;</span><span class="p">]</span> <span class="o">||</span> <span class="nx">response</span><span class="p">[</span><span class="s">&quot;ErrInfo&quot;</span><span class="p">]</span>
+          <span class="nv">err = </span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s">&quot;An error occured&quot;</span><span class="p">)</span>
+          <span class="nv">err.response = </span><span class="nx">response</span>
+          <span class="nv">err.httpStatusCode = </span><span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span>
+          <span class="nv">response = </span><span class="kc">null</span>
+        <span class="k">unless</span> <span class="nx">err</span>
+          <span class="k">if</span> <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">&lt;</span> <span class="mi">200</span> <span class="o">or</span> <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span> <span class="o">&gt;=</span> <span class="mi">300</span>
+            <span class="nv">err = </span><span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s">&quot;Response Status : &quot;</span> <span class="o">+</span> <span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span><span class="p">)</span>
+            <span class="nv">err.response = </span><span class="nx">response</span>
+            <span class="nv">err.httpStatusCode = </span><span class="nx">res</span><span class="p">.</span><span class="nx">statusCode</span>
+            <span class="nv">response = </span><span class="kc">null</span>
+        <span class="nx">cb</span> <span class="nx">err</span><span class="p">,</span> <span class="nx">response</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">write</span> <span class="nx">post_data</span>
+    <span class="nx">req</span><span class="p">.</span><span class="nx">end</span><span class="p">()</span>
+
+  <span class="nv">assertRequiredOptions: </span><span class="nf">(required, options) -&gt;</span>
+    <span class="nv">missing = </span><span class="p">[]</span>
+    <span class="nx">required</span><span class="p">.</span><span class="nx">forEach</span> <span class="nf">(val) -&gt;</span>
+      <span class="nx">missing</span><span class="p">.</span><span class="nx">push</span> <span class="nx">val</span>  <span class="k">unless</span> <span class="nx">val</span> <span class="k">of</span> <span class="nx">options</span>
+    <span class="k">if</span> <span class="nx">missing</span><span class="p">.</span><span class="nx">length</span> <span class="o">&gt;</span> <span class="mi">0</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span><span class="p">(</span><span class="s">&quot;ArgumentError: Required </span><span class="si">#{</span><span class="nx">missing</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="s">&#39;, &#39;</span><span class="p">)</span><span class="si">}</span><span class="s"> were not provided.&quot;</span><span class="p">)</span>
+
+  <span class="nv">replaceParams: </span><span class="nf">(params) -&gt;</span>
+    <span class="nv">new_params = </span><span class="p">{}</span>
+    <span class="nv">conv = </span><span class="k">new</span> <span class="nx">iconv</span><span class="p">.</span><span class="nx">Iconv</span><span class="p">(</span><span class="s">&quot;UTF-8&quot;</span><span class="p">,</span> <span class="s">&quot;SHIFT_JIS&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="nx">key</span> <span class="k">of</span> <span class="nx">params</span>
+      <span class="k">try</span>
+        <span class="nx">new_params</span><span class="p">[</span><span class="nx">Const</span><span class="p">[</span><span class="nx">key</span><span class="p">]]</span> <span class="o">=</span> <span class="nx">conv</span><span class="p">.</span><span class="nx">convert</span><span class="p">(</span><span class="s">&quot;</span><span class="si">#{</span><span class="nx">params</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span><span class="si">}</span><span class="s">&quot;</span><span class="p">).</span><span class="nx">toString</span><span class="p">()</span>
+      <span class="k">catch</span> <span class="nx">error</span>
+        <span class="nx">new_params</span><span class="p">[</span><span class="nx">Const</span><span class="p">[</span><span class="nx">key</span><span class="p">]]</span> <span class="o">=</span> <span class="s">&quot;</span><span class="si">#{</span><span class="nx">params</span><span class="p">[</span><span class="nx">key</span><span class="p">]</span><span class="si">}</span><span class="s">&quot;</span>
+    <span class="k">return</span> <span class="nx">new_params</span>
+
+<span class="nv">module.exports.GMOAPI = </span><span class="nx">GMOAPI</span></div></div></div></div></body></html>
