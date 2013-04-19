@@ -6,7 +6,7 @@ init:
 	npm install
 
 docs:
-	docco src/*.coffee
+	groc
 
 clean-docs:
 	rm -rf docs/
@@ -18,7 +18,7 @@ build:
 	coffee -o lib/ -c src/ && coffee -c test/gmo.coffee
 
 test:
-	nodeunit test/gmo.js
+	mocha
 
 dist: clean init docs build test
 

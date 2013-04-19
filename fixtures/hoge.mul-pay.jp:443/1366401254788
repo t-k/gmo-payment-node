@@ -1,0 +1,10 @@
+POST /payment/SaveMember.idPass
+content-type: application/x-www-form-urlencoded
+
+200 HTTP/1.1
+date: Fri, 19 Apr 2013 19:54:14 GMT
+connection: close
+content-type: text/plain;charset=Windows-31J
+transfer-encoding: chunked
+
+MemberID=111111111111

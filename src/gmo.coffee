@@ -1,7 +1,7 @@
-ShopAPI = require("./shop_api").ShopAPI
-SiteAPI = require("./site_api").SiteAPI
-ShopAndSiteAPI = require("./shop_and_site_api").ShopAndSiteAPI
+# Node.js client library for the GMO Payment Platform.
+# Copyright 2013 Tatsuo Kaniwa
+# tatsuo[at]kaniwa.biz
 
-module.exports.ShopAPI = ShopAPI
-module.exports.SiteAPI = SiteAPI
-module.exports.ShopAndSiteAPI = ShopAndSiteAPI
+module.exports.ShopAPI = require("./shop_api")
+module.exports.SiteAPI = require("./site_api")
+module.exports.ShopAndSiteAPI = require("./shop_and_site_api")

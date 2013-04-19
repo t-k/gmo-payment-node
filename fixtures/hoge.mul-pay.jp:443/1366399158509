@@ -1,0 +1,10 @@
+POST /payment/ExecTran.idPass
+content-type: application/x-www-form-urlencoded
+
+200 HTTP/1.1
+date: Fri, 19 Apr 2013 19:19:18 GMT
+connection: close
+content-type: text/plain;charset=Windows-31J
+transfer-encoding: chunked
+
+ACS=0&OrderID=1366398099976&Forward=2a99662&Method=1&PayTimes=&Approve=6712021&TranID=1304200416111111111111193528&TranDate=20130420041918&CheckString=417f0290d4ffae2e40089eddc8cd63f4&ClientField1=hogehoge&ClientField2=&ClientField3=

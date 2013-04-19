@@ -1,0 +1,10 @@
+POST /payment/SearchCard.idPass
+content-type: application/x-www-form-urlencoded
+
+200 HTTP/1.1
+date: Fri, 19 Apr 2013 20:02:50 GMT
+connection: close
+content-type: text/plain;charset=Windows-31J
+transfer-encoding: chunked
+
+CardSeq=0&DefaultFlag=0&CardName=&CardNo=*************111&Expire=1405&HolderName=&DeleteFlag=0

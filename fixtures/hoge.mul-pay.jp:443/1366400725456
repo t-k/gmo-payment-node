@@ -1,0 +1,10 @@
+POST /payment/SearchTrade.idPass
+content-type: application/x-www-form-urlencoded
+
+200 HTTP/1.1
+date: Fri, 19 Apr 2013 19:45:25 GMT
+connection: close
+content-type: text/plain;charset=Windows-31J
+transfer-encoding: chunked
+
+OrderID=1366400470231&Status=AUTH&ProcessDate=20130420044346&JobCd=AUTH&AccessID=9e6c3b46f7fd03ac22693b335286e622&AccessPass=faec7412b6090024b0a700cd0218a0f5&ItemCode=0000990&Amount=1000&Tax=0&SiteID=&MemberID=&CardNo=************1111&Expire=1405&Method=1&PayTimes=&Forward=2a99662&TranID=1304200441111111111111193613&Approve=6712106&ClientField1=&ClientField2=&ClientField3=

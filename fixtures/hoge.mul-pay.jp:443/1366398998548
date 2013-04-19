@@ -1,0 +1,10 @@
+POST /payment/EntryTran.idPass
+content-type: application/x-www-form-urlencoded
+
+200 HTTP/1.1
+date: Fri, 19 Apr 2013 19:16:38 GMT
+connection: close
+content-type: text/plain;charset=Windows-31J
+transfer-encoding: chunked
+
+AccessID=be64db043385c5e0d71c130da219d09e&AccessPass=caee4863a2305db9fe922b014bbb9e47

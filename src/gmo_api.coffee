@@ -20,6 +20,7 @@ class GMOAPI
       host: @host
       path: path
       method: "POST"
+      port: 443
       headers:
         "Content-Type": "application/x-www-form-urlencoded"
         "Content-Length": post_data.length

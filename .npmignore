@@ -1,1 +1,4 @@
 src
+test
+npm-debug.log
+test/spec_helper.coffee

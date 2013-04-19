@@ -1,0 +1,10 @@
+POST /payment/SaveCard.idPass
+content-type: application/x-www-form-urlencoded
+
+200 HTTP/1.1
+date: Fri, 19 Apr 2013 20:01:24 GMT
+connection: close
+content-type: text/plain;charset=Windows-31J
+transfer-encoding: chunked
+
+CardSeq=0&CardNo=*************111&Forward=2a99662

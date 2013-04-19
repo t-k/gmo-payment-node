@@ -1,0 +1,10 @@
+POST /payment/AlterTran.idPass
+content-type: application/x-www-form-urlencoded
+
+200 HTTP/1.1
+date: Fri, 19 Apr 2013 19:21:46 GMT
+connection: close
+content-type: text/plain;charset=Windows-31J
+transfer-encoding: chunked
+
+AccessID=6cf5c999ee7fb7ed2cf5c175fe6d0c62&AccessPass=a7cf9525cb9317f03e90180c3536e5f8&Forward=2a99662&Approve=6712068&TranID=1304200419111111111111193575&TranDate=20130420042147
