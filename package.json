@@ -1,0 +1,33 @@
+{
+  "author": "Tatsuo Kaniwa <tatsuo@kaniwa.biz>",
+  "name": "gmo",
+  "description": "Node.js client library for the GMO Payment Platform.",
+  "version": "0.0.1",
+  "main": "lib/gmo.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "dependencies": {
+    "iconv": "*"
+  },
+  "devDependencies": {
+    "coffee-script": ">= 1.3"
+  },
+  "keywords": [
+    "gmo",
+    "payment",
+    "api"
+  ],
+  "readmeFilename": "README.md",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/t-k/gmo-payment-node.git"
+  },
+  "license": "MIT"
+}
