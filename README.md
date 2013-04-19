@@ -1,9 +1,9 @@
 GMO
 ====
+[![NPM version](https://badge.fury.io/js/gmo.png)](http://badge.fury.io/js/gmo)
+[![Build Status](https://travis-ci.org/t-k/gmo-payment-node.png)](https://travis-ci.org/t-k/gmo-payment-node)
 
 GMO is a Node.js client library for the GMO Payment Platform, supporting the PG Multi Payment API, exec transactions, register users, and so on.
-
-* https://npmjs.org/package/gmo
 
 Installation
 ---
