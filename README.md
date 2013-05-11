@@ -2,6 +2,7 @@ GMO
 ====
 [![NPM version](https://badge.fury.io/js/gmo.png)](http://badge.fury.io/js/gmo)
 [![Build Status](https://travis-ci.org/t-k/gmo-payment-node.png)](https://travis-ci.org/t-k/gmo-payment-node)
+[![Dependency Status](https://david-dm.org/t-k/gmo-payment-node/status.png)](http://david-dm.org/t-k/gmo-payment-node)
 
 GMO is a Node.js client library for the GMO Payment Platform, supporting the PG Multi Payment API, exec transactions, register users, and so on.
 
@@ -25,7 +26,7 @@ shopApi = new gmo.ShopAPI(
 )
 
 option =
-  order_id: order_id
+  order_id: "order_id"
   job_cd: "AUTH"
   amount: "100"
 
