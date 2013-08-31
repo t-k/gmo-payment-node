@@ -1,6 +1,7 @@
 .lock-wscript
 .project
 build/
+doc
 lib
 *.o
 *.node
