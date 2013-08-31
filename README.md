@@ -37,6 +37,27 @@ shopApi.entryTran option , (err, res) ->
     console.log res
 
 ```
+More examples are available on <a href="https://github.com/t-k/gmo-payment-node/tree/master/test">test directory</a>.
+
+Shop API
+---
+
+In this library, we have defined as "Shop API" an API that requires shop ID and shop password to the API call.
+
+Site API
+---
+
+An API that requires site ID and site password to the API call.
+
+ShopAndSite API
+---
+
+An API that requires shop ID, shop password, site ID and site password to the API call.
+
+In other languages
+---
+
+* <a href="https://github.com/t-k/gmo-payment-ruby">GMO Payment Ruby</a>
 
 Contributors
 ---
