@@ -16,27 +16,53 @@ npm install gmo
 使い方
 ---
 
-```coffeescript
-gmo = require "gmo"
+```javascript
+var gmo, option, shopApi;
 
-shopApi = new gmo.ShopAPI(
-  host: "hoge.mul-pay.jp"
-  shop_id: "shop_id"
+gmo = require("gmo");
+
+shopApi = new gmo.ShopAPI({
+  host:      "hoge.mul-pay.jp",
+  shop_id:   "shop_id",
   shop_pass: "shop_pass"
-)
+});
 
-option =
-  order_id: "order_id"
-  job_cd: "AUTH"
-  amount: "100"
+option = {
+  order_id: "order_id",
+  job_cd:   "AUTH",
+  amount:   "100"
+};
 
-shopApi.entryTran option , (err, res) ->
-  if err
-    console.log err
-  if res
-    console.log res
-
+shopApi.entryTran(option, function(err, res) {
+  if (err) {
+    console.log(err);
+  }
+  if (res) {
+    return console.log(res);
+  }
+});
 ```
+その他のサンプルは<a href="https://github.com/t-k/gmo-payment-node/tree/master/test">test ディレクトリ</a>を参照してください。
+
+Shop API
+---
+
+GMO Gemでは、API呼び出しにGMOから与えられたショップID、ショップパスが必要になるAPIをShop APIと定義しています。
+
+Site API
+---
+
+API呼び出しにGMOから与えられたショップID、ショップパス、サイトID、サイトパスが必要になるAPI群。
+
+ShopAndSite API
+---
+
+API呼び出しにGMOから与えられたサイトID、サイトパスが必要になるAPI。
+
+他の言語での実装
+---
+
+* <a href="https://github.com/t-k/gmo-payment-ruby">GMO Payment Ruby</a>
 
 Contributors
 ---

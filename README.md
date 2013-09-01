@@ -16,26 +16,31 @@ npm install gmo
 Usage
 ---
 
-```coffeescript
-gmo = require "gmo"
+```javascript
+var gmo, option, shopApi;
 
-shopApi = new gmo.ShopAPI(
-  host: "hoge.mul-pay.jp"
-  shop_id: "shop_id"
+gmo = require("gmo");
+
+shopApi = new gmo.ShopAPI({
+  host:      "hoge.mul-pay.jp",
+  shop_id:   "shop_id",
   shop_pass: "shop_pass"
-)
+});
 
-option =
-  order_id: "order_id"
-  job_cd: "AUTH"
-  amount: "100"
+option = {
+  order_id: "order_id",
+  job_cd:   "AUTH",
+  amount:   "100"
+};
 
-shopApi.entryTran option , (err, res) ->
-  if err
-    console.log err
-  if res
-    console.log res
-
+shopApi.entryTran(option, function(err, res) {
+  if (err) {
+    console.log(err);
+  }
+  if (res) {
+    return console.log(res);
+  }
+});
 ```
 More examples are available on <a href="https://github.com/t-k/gmo-payment-node/tree/master/test">test directory</a>.
 
